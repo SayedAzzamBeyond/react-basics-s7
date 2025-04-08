@@ -1,40 +1,45 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { TodoItem } from "./TodoItem"
 import { Todo } from "./interface";
-
+import useGetTodos from "./useGetTodos";
+import TodoFilter from "./TodoFilter";
+import TodoForm from "./TodoForm";
 
 
 export const TodoList = () =>{
-    const [filteredTodos,setFilteredTodos] = useState<Todo[]>([]);
     const [limit,setLimit] = useState(10);
+    const [total,setTotal] = useState(0);
     const [skip,setSkip] = useState(0);
-
-    useEffect(()=>{
-         const fetchTodos = async () =>{
-            const response = await fetch(`https://dummyjson.com/todos?limit=${limit}&skip=${skip}`)
-            const data = await response.json();
-            setFilteredTodos(data.todos);
-            console.log(data.todos);
-        }
-        fetchTodos();
-    },[limit,skip]);
-    
+    const [filteredTodos,dispatch] = useGetTodos({limit,skip,setTotal});
 
     const handleChange = (id: number,key: string,value: string | boolean) => {
-        setFilteredTodos(filteredTodos.map(todo => {
-            return todo.id === id ? {...todo, [key]: value} : todo
-        }));
+        dispatch({type: "CHANGE_TODO",payload: {id,key,value}})
+    }
+
+    const handleAddNewTodo = (title: string)=>{
+        dispatch({type: "ADD_TODO",payload: {title,total}})
+    }
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>)=>{
+        switch (e.target.id) {
+            case 'limit':
+                setLimit(+e.target.value)
+                break;
+            case 'skip':
+                setSkip(+e.target.value)
+                break;
+            default:
+                break;
+        }
     }
 
     return (
         <>
-            <label htmlFor="limit">limit</label>
-            <input type="number" value={limit} id="limit" onChange={(e) => setLimit(+e.target.value)}  />
-            <label htmlFor="skip">skip</label>
-            <input type="number" value={skip} id="skip" onChange={(e) => setSkip(+e.target.value)}  />
+            <TodoForm onSubmit={handleAddNewTodo} />
             <ul>
                 {filteredTodos.map(todo => <TodoItem handleChange={handleChange} key={todo.id} todo={todo} />)}
             </ul>
+           <TodoFilter limit={limit} skip={skip} handleInputChange={handleInputChange} />
         </>
     )
 }
