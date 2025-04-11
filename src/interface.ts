@@ -10,11 +10,18 @@ export interface TodoItemProps{
     todo: Todo,
     handleChange: (id: number,key: string,value: string | boolean) => void
 }
-
+export interface PaginationState{
+    limit: number,
+    skip: number,
+    total: number,
+}
 export interface GetTodosProps{
-  limit: number,
-  skip: number,
-  setTotal: Function
+    pagination: PaginationState,
+    setPagination: Function
+}
+export interface PaginationInputProps{
+    pagination: PaginationState,
+    setPagination: Function
 }
 export interface TodoFormProps{
     onSubmit: (title: string)=>void

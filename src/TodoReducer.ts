@@ -7,7 +7,7 @@ export const TodoReducer: TodoReducerType = (state, action) => {
         case "INIT_TODO": return action.payload;
         case "ADD_TODO": 
             const newTodo: Todo = {
-                id: action.payload.total +1,
+                id: action.payload.total,
                 todo: action.payload.title,
                 completed: false
             }

@@ -1,0 +1,18 @@
+#bg{
+    background: green;
+}
+.bg2{
+    font-size: 30px;
+}
+.header{
+    color: aqua;
+    & .todo_list{
+        background: rgb(227, 196, 18);
+    }
+    & .todo_item{
+        background: rgb(4, 0, 128);
+    }
+    & .todo_button{
+        background: rgb(4, 0, 128);
+    }
+}

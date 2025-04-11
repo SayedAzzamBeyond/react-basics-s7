@@ -1,45 +1,39 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { TodoItem } from "./TodoItem"
 import { Todo } from "./interface";
 import useGetTodos from "./useGetTodos";
 import TodoFilter from "./TodoFilter";
 import TodoForm from "./TodoForm";
+import { usePaginationInput } from "./usePaginationInput";
+import styles from './Todo.module.css';
 
 
 export const TodoList = () =>{
-    const [limit,setLimit] = useState(10);
-    const [total,setTotal] = useState(0);
-    const [skip,setSkip] = useState(0);
-    const [filteredTodos,dispatch] = useGetTodos({limit,skip,setTotal});
+    const [pagination,setPagination] = useState({limit: 10,skip: 0,total: 0});
+    const [filteredTodos,dispatch] = useGetTodos({pagination,setPagination});
+    const { handleInputChange } = usePaginationInput({pagination,setPagination});
 
-    const handleChange = (id: number,key: string,value: string | boolean) => {
+    console.log(styles);
+    
+    const handleChange = useCallback((id: number,key: string,value: string | boolean) => {
         dispatch({type: "CHANGE_TODO",payload: {id,key,value}})
-    }
+    },[dispatch]);
 
-    const handleAddNewTodo = (title: string)=>{
+    const handleAddNewTodo = useCallback((title: string)=>{
+        const total = pagination.total + 1;
+        setPagination({...pagination, total});
         dispatch({type: "ADD_TODO",payload: {title,total}})
-    }
-
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>)=>{
-        switch (e.target.id) {
-            case 'limit':
-                setLimit(+e.target.value)
-                break;
-            case 'skip':
-                setSkip(+e.target.value)
-                break;
-            default:
-                break;
-        }
-    }
+    },[pagination.total,dispatch]);
 
     return (
         <>
             <TodoForm onSubmit={handleAddNewTodo} />
-            <ul>
-                {filteredTodos.map(todo => <TodoItem handleChange={handleChange} key={todo.id} todo={todo} />)}
-            </ul>
-           <TodoFilter limit={limit} skip={skip} handleInputChange={handleInputChange} />
+            <div className={styles['header']} id={styles['bg']}>
+                <ul className={`${styles['todo_list']} ${styles['bg2']}`}>
+                    {filteredTodos.map(todo => <TodoItem handleChange={handleChange} key={todo.id} todo={todo} />)}
+                </ul>
+            </div>
+           <TodoFilter limit={pagination.limit} skip={pagination.skip} handleInputChange={handleInputChange} />
         </>
     )
 }

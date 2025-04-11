@@ -1,13 +1,18 @@
-import { FormEventHandler, useRef } from "react"
+import { FormEventHandler, memo, useRef } from "react"
 import { TodoFormProps } from "./interface";
 
-export default function TodoForm({onSubmit}: TodoFormProps) {
-    const titleRef= useRef(null);
+function TodoForm({onSubmit}: TodoFormProps) {
+    console.log("TodoForm");
+    
+    const titleRef= useRef<HTMLInputElement>(null);
     const handleNewTodo: FormEventHandler<HTMLFormElement> = (e) =>{
         e.preventDefault();
-        const value = (titleRef.current as HTMLInputElement | null)?.value;
+        const value = titleRef.current?.value;
         if(value){
             onSubmit(value);
+            if (titleRef.current) {
+                titleRef.current.value = '';
+            }
         }
     }
   return (
@@ -19,3 +24,5 @@ export default function TodoForm({onSubmit}: TodoFormProps) {
     </>
   )
 }
+
+export default memo(TodoForm);
