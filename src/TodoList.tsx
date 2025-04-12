@@ -6,6 +6,7 @@ import TodoFilter from "./TodoFilter";
 import TodoForm from "./TodoForm";
 import { usePaginationInput } from "./usePaginationInput";
 import styles from './Todo.module.css';
+import { Link } from "react-router";
 
 
 export const TodoList = () =>{
@@ -13,7 +14,6 @@ export const TodoList = () =>{
     const [filteredTodos,dispatch] = useGetTodos({pagination,setPagination});
     const { handleInputChange } = usePaginationInput({pagination,setPagination});
 
-    console.log(styles);
     
     const handleChange = useCallback((id: number,key: string,value: string | boolean) => {
         dispatch({type: "CHANGE_TODO",payload: {id,key,value}})
@@ -27,6 +27,7 @@ export const TodoList = () =>{
 
     return (
         <>
+            <Link to="/">home page</Link>
             <TodoForm onSubmit={handleAddNewTodo} />
             <div className={styles['header']} id={styles['bg']}>
                 <ul className={`${styles['todo_list']} ${styles['bg2']}`}>

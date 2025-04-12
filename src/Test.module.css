@@ -5,3 +5,8 @@
 .todo-list{
     background: red;
 }
+
+.active{
+    color: #61dafb;
+    background: red;
+  }

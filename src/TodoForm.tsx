@@ -1,8 +1,10 @@
 import { FormEventHandler, memo, useRef } from "react"
 import { TodoFormProps } from "./interface";
+import { useNavigate } from "react-router";
 
 function TodoForm({onSubmit}: TodoFormProps) {
-    console.log("TodoForm");
+    let navigate = useNavigate();
+
     
     const titleRef= useRef<HTMLInputElement>(null);
     const handleNewTodo: FormEventHandler<HTMLFormElement> = (e) =>{
@@ -13,6 +15,7 @@ function TodoForm({onSubmit}: TodoFormProps) {
             if (titleRef.current) {
                 titleRef.current.value = '';
             }
+            navigate("/");
         }
     }
   return (
