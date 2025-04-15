@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { TodoItem } from "./TodoItem"
+import TodoItem from "./TodoItem"
 import { Todo } from "./interface";
 import useGetTodos from "./useGetTodos";
 import TodoFilter from "./TodoFilter";
@@ -14,8 +14,7 @@ export const TodoList = () =>{
     const [filteredTodos,dispatch] = useGetTodos({pagination,setPagination});
     const { handleInputChange } = usePaginationInput({pagination,setPagination});
 
-    
-    const handleChange = useCallback((id: number,key: string,value: string | boolean) => {
+    const handleChange =useCallback( (id: number,key: string,value: string | boolean) => {
         dispatch({type: "CHANGE_TODO",payload: {id,key,value}})
     },[dispatch]);
 
@@ -23,13 +22,13 @@ export const TodoList = () =>{
         const total = pagination.total + 1;
         setPagination({...pagination, total});
         dispatch({type: "ADD_TODO",payload: {title,total}})
-    },[pagination.total,dispatch]);
+    },[setPagination,pagination.total,dispatch]);
 
     return (
         <>
-            <Link to="/">home page</Link>
+            <input type="number" value={pagination.total} onChange={(e) => setPagination({...pagination,total: +e.target.value})} />
             <TodoForm onSubmit={handleAddNewTodo} />
-            <div className={styles['header']} id={styles['bg']}>
+            <div>
                 <ul className={`${styles['todo_list']} ${styles['bg2']}`}>
                     {filteredTodos.map(todo => <TodoItem handleChange={handleChange} key={todo.id} todo={todo} />)}
                 </ul>

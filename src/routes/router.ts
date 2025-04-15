@@ -12,16 +12,23 @@ import Todo from "../pages/Todo";
 import { newTodoAction, SingleTodoLoader, TodosLoader } from "../components/TodoLoader";
 import CreateTodo from "../pages/CreateTodo";
 import CreateTodoAction from "../pages/CreateTodoAction";
+import ErrorPage from "../pages/ErrorPage";
+import AppContext from "../pages/AppContext";
 
 
 
 export default createBrowserRouter([
     {
         Component: Main,
+        ErrorBoundary: ErrorPage,
         children: [
             {
                 path: "/",
                 Component: Home
+            },
+            {
+                path: "/context",
+                Component: AppContext
             },
             {
                 path:"/about",

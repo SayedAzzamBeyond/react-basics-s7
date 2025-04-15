@@ -2,7 +2,7 @@
 // import './App.css';
 import { Counter } from './Counter';
 import { Item } from './Item';
-import { TodoItem } from './TodoItem';
+// import { TodoItem } from './TodoItem';
 import { TodoList } from './TodoList';
 const items = [
   {text: 'Space suit', isPacked: true},

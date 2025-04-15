@@ -17,6 +17,7 @@ export default function Main() {
                 </NavLink>
 
                 <NavLink to="about">About</NavLink>
+                <NavLink to="context">Context</NavLink>
                 <NavLink to="todo">Todo</NavLink>
                 <NavLink to="movie">Movie</NavLink>
             </nav>

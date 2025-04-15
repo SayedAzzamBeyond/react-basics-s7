@@ -13,10 +13,12 @@ export const TodosLoader =  async ({params}: {params: any}) => {
 
 export const newTodoAction = async({request}: {request: Request}) => {
     const data = await request.formData();
+    
     const newTodo = {
         id: uuidv4(),
         todo: data.get('todo'),
         completed: false
       };
+      // call post todos api to save new todo into database
     return newTodo;
   }

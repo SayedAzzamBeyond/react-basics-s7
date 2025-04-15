@@ -1,6 +1,7 @@
+import { memo } from "react";
 import { Todo, TodoItemProps } from "./interface"
 import styles from './Test.module.css';
-export const TodoItem: React.FC<TodoItemProps> = ({todo,handleChange}) =>{
+const TodoItem: React.FC<TodoItemProps> = ({todo,handleChange}) =>{
     return ( 
         <>
             <li className='bg'>
@@ -10,3 +11,4 @@ export const TodoItem: React.FC<TodoItemProps> = ({todo,handleChange}) =>{
         </>
     )
 }
+export default memo(TodoItem)

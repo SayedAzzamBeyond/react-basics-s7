@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 function TodoForm({onSubmit}: TodoFormProps) {
     let navigate = useNavigate();
 
+    console.log("TodoForm");
     
     const titleRef= useRef<HTMLInputElement>(null);
     const handleNewTodo: FormEventHandler<HTMLFormElement> = (e) =>{
