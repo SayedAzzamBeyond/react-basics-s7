@@ -35,3 +35,8 @@ type TodoChangeType = 'todo' | 'completed';
 
 // { id: number } & { [K in TodoChangeType]: K extends 'todo' ? string : boolean }
 export type TodoReducerType = Reducer<Todo[], { type: typeof ADD_TODO | typeof CHANGE_TODO | typeof INIT_TODO; payload: any }>;
+export interface AuthenticationHandle{
+    handle:{
+      mustAuthenticated?: boolean
+    }
+  }

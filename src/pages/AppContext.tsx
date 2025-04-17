@@ -1,50 +1,45 @@
 import { createContext, useContext, useState } from 'react';
+import { ThemeProvider, useThemeContext } from '../context/ThemeContext';
+import { UserProvider, useUserContext } from '../context/UserContext';
 
-const ThemeContext = createContext<any>(null);
-const CurrentUserContext = createContext<any>(null);
 
 export default function AppContext() {
-  const [theme ,setTheme] = useState("dark");
-  const [currentUser ,setCurrentUser] = useState({id: 1,name: 'gamal', });
   
   return (
     <>
-      <MyProviders theme={theme} setTheme={setTheme} currentUser={currentUser} setCurrentUser={setCurrentUser}>
-        <Form />
-        <FormSelect />
-      </MyProviders>
-
+      <Form />
+      <FormSelect />
     </>
   )
 }
 interface MyProvidersProps 
 {
   children: React.ReactNode,
-  theme: string,
-  setTheme: React.Dispatch<React.SetStateAction<string>>,
-  currentUser: any,
-  setCurrentUser: React.Dispatch<React.SetStateAction<any>>
+  // theme: string,
+  // setTheme: React.Dispatch<React.SetStateAction<string>>,
+  // currentUser: any,
+  // setCurrentUser: React.Dispatch<React.SetStateAction<any>>
 }
   
-function MyProviders({children,theme,setTheme,currentUser,setCurrentUser}: MyProvidersProps) {
+export function MyProviders({children}: MyProvidersProps) {
   return (
     <>
-    <ThemeContext.Provider value={{theme,setTheme}}>
-      <CurrentUserContext.Provider value={{currentUser,setCurrentUser}}>
-        {children}
-      </CurrentUserContext.Provider>
-    </ThemeContext.Provider>
+      <ThemeProvider>
+        <UserProvider>
+          {children}
+        </UserProvider>
+      </ThemeProvider>
     </>
   )
 }
 function FormSelect(){
-  const {theme,setTheme} = useContext(ThemeContext);
+  const {theme,setTheme} = useThemeContext();
   console.log('theme from form input: ',theme);
   
   const className = 'input-' + theme;
   return (
    <>
-   <select name="" onChange={(e) => setTheme(e.target.value)} id="">
+      <select name="" onChange={(e) => setTheme(e.target.value)} id="">
         <option value="dark">Dark</option>
         <option value="light">Light</option>
         <option value="blue">Blue</option>
@@ -63,7 +58,7 @@ function Form() {
 }
 
 function Panel({ title, children }: { title: string, children: React.ReactNode }) {
-  const {theme} = useContext(ThemeContext);
+  const {theme} = useThemeContext();
   const className = 'panel-' + theme;
   return (
     <section className={className}>
@@ -74,8 +69,8 @@ function Panel({ title, children }: { title: string, children: React.ReactNode }
 }
 
 function Button({ children }: { children: React.ReactNode }) {
-  const {theme} = useContext(ThemeContext);
-  const {currentUser} = useContext(CurrentUserContext);
+  const {theme} = useThemeContext();
+  const {currentUser} = useUserContext();
   console.log({theme,currentUser});
   
   const className = 'button-' + theme;

@@ -1,3 +1,4 @@
+import { ShouldRevalidateFunctionArgs } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 
 export const SingleTodoLoader =   async ({params}: {params: any}) => {
@@ -6,6 +7,8 @@ export const SingleTodoLoader =   async ({params}: {params: any}) => {
     return data;
 }
 export const TodosLoader =  async ({params}: {params: any}) => {
+  console.log('loading...');
+  
     const res = await fetch(`https://dummyjson.com/todos?limit=10`);
     const data = await res.json();
     return data.todos;
@@ -21,4 +24,10 @@ export const newTodoAction = async({request}: {request: Request}) => {
       };
       // call post todos api to save new todo into database
     return newTodo;
+  }
+
+  export const revalidateCreateTodo = (arg: ShouldRevalidateFunctionArgs)=>{
+    console.log('revalidate');
+    
+    return true;
   }

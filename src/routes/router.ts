@@ -9,15 +9,25 @@ import { TodoList } from "../TodoList";
 import Movie from "../pages/Todo";
 import HomeAuth from "../pages/HomeAuth";
 import Todo from "../pages/Todo";
-import { newTodoAction, SingleTodoLoader, TodosLoader } from "../components/TodoLoader";
+import { newTodoAction, revalidateCreateTodo, SingleTodoLoader, TodosLoader } from "../components/TodoLoader";
 import CreateTodo from "../pages/CreateTodo";
 import CreateTodoAction from "../pages/CreateTodoAction";
 import ErrorPage from "../pages/ErrorPage";
 import AppContext from "../pages/AppContext";
+import Profile from "../pages/Profile";
+import { AuthAction } from "../components/AuthAction";
 
 
-
+// handle
 export default createBrowserRouter([
+    {
+        path:"/blog",
+        // Component: Blog,
+        lazy: async () => {
+            const { default: Component } = await import("../pages/Blog");
+            return { Component };
+          },
+    },
     {
         Component: Main,
         ErrorBoundary: ErrorPage,
@@ -32,7 +42,17 @@ export default createBrowserRouter([
             },
             {
                 path:"/about",
-                Component: About
+                Component: About,
+                handle: {
+                    mustAuthenticated: false
+                }
+            },
+            {
+                path:"/profile",
+                Component: Profile,
+                handle: {
+                    mustAuthenticated: true
+                }
             },
             {
                 path:"/todo",
@@ -42,30 +62,33 @@ export default createBrowserRouter([
                 path:"/todo/new",
                 Component: CreateTodoAction,
                 loader: TodosLoader,
-                action: newTodoAction
+                action: newTodoAction,
+                shouldRevalidate: revalidateCreateTodo,
             },
             {
                 path:"/todo/:todo_id?",
                 Component: Todo,
                 loader: SingleTodoLoader
             },
+           
           
         ]
     },
     {
-        path: '/auth',
         Component: Auth,
+        ErrorBoundary: ErrorPage,
         children: [
             {
                 index: true,
                 Component: HomeAuth
             },
             {
-                path: 'login',
-                Component: Login
+                path: '/login',
+                Component: Login,
+                action: AuthAction
             },
             {
-                path: 'register/*',
+                path: '/register/*',
                 Component: Register
             },
         ]

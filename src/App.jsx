@@ -1,24 +1,19 @@
 // import './Test.css';
 // import './App.css';
+import { RouterProvider } from 'react-router';
 import { Counter } from './Counter';
 import { Item } from './Item';
 // import { TodoItem } from './TodoItem';
 import { TodoList } from './TodoList';
-const items = [
-  {text: 'Space suit', isPacked: true},
-  {text: 'Helmet with a golden leaf', isPacked: true},
-  {text: 'Photo of Tam', isPacked: false}
-];
-
-
+import router from './routes/router';
+import { MyProviders } from './pages/AppContext';
 
 const App = () => {
   return (
     <>
-    <TodoList />
-      {/* <ul>
-        {items.map(item => <Item  key={item.text}   isPacked={item.isPacked} text={item.text}></Item> )}
-      </ul> */}
+      <MyProviders>
+          <RouterProvider router={router}></RouterProvider>
+      </MyProviders>
     </>
   )
 };
